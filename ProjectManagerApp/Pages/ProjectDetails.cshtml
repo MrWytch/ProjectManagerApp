@@ -1,0 +1,114 @@
+@page "{id:int}"
+@model ProjectManagerApp.Pages.ProjectDetailsModel
+
+@{
+    ViewData["Title"] = "Detail projektu - " + Model.Project?.Name;
+}
+
+<div class="container mt-5">
+    <h2 class="mb-3">@Model.Project?.Number  @Model.Project?.Name</h2>
+
+    <div class="card" style="background-color: rgba(255, 255, 255, 0.2);">
+        <div class="card-header">
+            <h5>Karta projektu</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">Typ projektu:</dt>
+                <dd class="col-sm-9">@Model.Project?.GetProjectTypeString()</dd>
+
+                <dt class="col-sm-2">Projektový manažer:</dt>
+                <dd class="col-sm-9">@Model.Manager?.Name , @Model.Manager?.Email , @Model.Manager?.Phone</dd>
+
+                <dt class="col-sm-2">Podpora:</dt>
+                <dd class="col-sm-9">
+                    <ul>
+                        @foreach (var s in Model.SupportList)
+                        {
+                            <li>@s.Name, @s.Email, @s.Phone</li>
+                        }
+                    </ul>
+                </dd>
+
+                <dt class="col-sm-2">Status:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @Model.Project?.GetProjectStatusColor()">
+                        @Model.Project?.GetProjectStatusString()
+                    </span>
+                </dd>
+
+                <dt class="col-sm-2">Pokrok:</dt>
+                <dd class="col-sm-9">
+                    <div class="col-sm-5">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: @Model.Project?.Progress%" aria-valuenow="@Model.Project?.Progress" aria-valuemin="0" aria-valuemax="100">@Model.Project?.Progress %</div>
+                        </div>
+                    </div>
+                </dd>
+
+                <dt class="col-sm-2">Zaèátek:</dt>
+                <dd class="col-sm-9">@Model.Project?.StartDate?.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-2">Konec:</dt>
+                <dd class="col-sm-9">@Model.Project?.FinishDate?.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-2">Cíle:</dt>
+                <dd class="col-sm-9">
+                    <div class="col-sm-2">
+                        <table class="table">
+                            <tbody>
+                                <tr style="background-color:@(Model.Project.CostDownGoal ? "#2F75B5" : "#DDEBF7"); color: @(Model.Project.CostDownGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.CostDownGoal ? "bold" : "normal");">
+                                    <td>Cost-down</td>
+                                </tr>
+                                <tr style="background-color:@(Model.Project.SafetyGoal ? "#C65911" : "#FCE4D6"); color: @(Model.Project.SafetyGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.SafetyGoal ? "bold" : "normal");">
+                                    <td>Safety</td>
+                                </tr>
+                                <tr style="background-color:@(Model.Project.ProductivityGoal ? "#FFC000" : "#FFF2CC"); color: @(Model.Project.ProductivityGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.ProductivityGoal ? "bold" : "normal");">
+                                    <td>Productivity</td>
+                                </tr>
+                                <tr style="background-color:@(Model.Project.EnvironmentGoal ? "#70AD47" : "#E2EFDA"); color: @(Model.Project.EnvironmentGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.EnvironmentGoal ? "bold" : "normal");">
+                                    <td>Environment</td>
+                                </tr>
+                                <tr style="background-color:@(Model.Project.WorkabilityGoal ? "#808080" : "#F2F2F2"); color: @(Model.Project.WorkabilityGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.WorkabilityGoal ? "bold" : "normal");">
+                                    <td>Workability</td>
+                                </tr>
+                                <tr style="background-color:@(Model.Project.WorkComfortGoal ? "#C150FA" : "#F7E8FE"); color: @(Model.Project.WorkComfortGoal ? "#000000" : "#A6A6A6"); font-weight: @(Model.Project.WorkComfortGoal ? "bold" : "normal");">
+                                    <td>Work comfort</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </dd>
+
+                <dt class="col-sm-2">Popis projektu:</dt>
+                <dd class="col-sm-9">
+                    <div class="col-sm-7">@Model.Project?.Description</div>
+                </dd>
+
+                <dt class="col-sm-2">Aktuální stav:</dt>
+                <dd class="col-sm-9">
+                    <div class="col-sm-7">@Model.Project?.ActualState</div>
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a class="btn btn-warning" asp-page="/ProjectEdit" asp-route-id="@Model.Project.Id">Edituj projekt</a>
+        <a class="btn btn-primary" asp-page="/ProjectList">Zpìt na seznam projektù</a>
+    </div>
+</div>
+
+@* Skript pro zobrazení varovného okna, pokud existuje varovná hláška v TempData *@
+@section Scripts {
+    @if (TempData["Overloaded"] != null)
+    {
+        <script>
+            window.onload = function () {
+                alert("@TempData["Overloaded"]");
+            };
+        </script>
+    }
+}
+

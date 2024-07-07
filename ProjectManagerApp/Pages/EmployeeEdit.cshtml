@@ -1,0 +1,48 @@
+﻿@page "{id:int}"
+@model ProjectManagerApp.Pages.EmployeeEditModel
+@{
+	ViewData["Title"] = "Editovat zaměstnance - " + Model.Employee?.Name;
+}
+
+<h3 class="mb-3">Editovat změstnance @Model.Employee?.Name</h3>
+
+<form method="post" class="col-sm-7">
+    
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Name">Jméno a příjmení</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Employee?.Name" />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Emial">E-mail</label>
+        <input type="text" class="form-control" id="Email" name="Email" value="@Model.Employee?.Email" />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Phone">Telefon</label>
+        <input type="text" class="form-control" id="Phone" name="Phone" value="@Model.Employee?.Phone" />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label class="checkbox-label" style="margin-right: 15px">
+            Aktivní
+            <input type="checkbox" name="IsActive" checked="@Model.Employee?.IsActive" value="true" />
+        </label>
+    </div>
+    <div class="form-group" style="margin-top: 20px">
+        <button type="submit" class="btn btn-success">Uložit změny</button>
+        <a class="btn btn-primary" asp-page="/EmployeeDetails" asp-route-id="@Model.Employee?.Id">Zpět na kartu zaměstnance</a>
+    </div>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" style="margin-top: 10px">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}

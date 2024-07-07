@@ -1,0 +1,16 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Vítejte v aplikaci Project Manager</h1>
+    @if (Model.IsDatabaseEmpty)
+    {
+        <h5 style="margin-top:120px">Vypadá to, že vaše databáze je prázdná. Stiskem tlačítka nahrajete data.</h5>
+        <form method="post" asp-page-handler="InitializeDatabase" style="margin-top:100px">
+            <button type="submit" class="btn btn-dark">Nahrát data</button>
+        </form>
+    }
+</div>

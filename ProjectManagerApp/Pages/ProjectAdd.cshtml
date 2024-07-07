@@ -1,0 +1,123 @@
+﻿@page
+@model ProjectManagerApp.Pages.ProjectAddModel
+@{
+	ViewData["Title"] = "Přidat nový projekt";
+}
+
+<h3 class="mb-3">Přidat nový projekt</h3>
+
+<form method="post" class="col-sm-7">
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Number">Číslo projektu</label>
+        <input type="text" class="form-control" id="Number" name="Number" value="@Model.Project?.Number" readonly/>
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Name">Název projektu</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Project?.Name" />
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="ProjectType">Typ projektu</label>
+        <select class="form-control" id="ProjectType" name="ProjectType" asp-items="@Model.ProjectTypeSelectList">
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="ManagerId">Projektový manažer</label>
+        <select class="form-control" id="ManagerId" name="ManagerId" asp-items="@Model.EmployeeSelectList">
+        </select>
+    </div>
+
+    <!-- Implementace supportů -->
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Support1Id">První zaměstnanec podpory</label>
+        <select class="form-control" asp-for="Support1Id" asp-items="@Model.Support1SelectList">
+            <option value="">--Vyberte zaměstnance nebo žádného--</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Support2Id">Druhý zaměstnanec podpory</label>
+        <select class="form-control" asp-for="Support2Id" asp-items="@Model.Support2SelectList">
+            <option value="">--Vyberte zaměstnance nebo žádného--</option>
+        </select>
+    </div>
+    
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Progress">Pokrok (%)</label>
+        <input type="number" class="form-control" id="Progress" name="Progress" value="@Model.Project?.Progress" min="0" max="100" />
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="StartDate">Datum začátku</label>
+        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.Project?.StartDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="FinishDate">Datum konce</label>
+        <input type="date" class="form-control" id="FinishDate" name="FinishDate" value="@Model.Project?.FinishDate?.ToString("yyyy-MM-dd")" />
+    </div>
+    
+    <div class="form-group" style="margin-bottom: 10px">
+        <fieldset>
+            Cíle:
+            <div class="checkbox-group">
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="CostDownGoal" checked="@Model.Project?.CostDownGoal" value="true" />
+                    Cost-down
+                </label>
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="SafetyGoal" checked="@Model.Project?.SafetyGoal" value="true" />
+                    Safety
+                </label>
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="ProductivityGoal" checked="@Model.Project?.ProductivityGoal" value="true" />
+                    Productivity
+                </label>
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="EnvironmentGoal" checked="@Model.Project?.EnvironmentGoal" value="true" />
+                    Environment
+                </label>
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="WorkabilityGoal" checked="@Model.Project?.WorkabilityGoal" value="true" />
+                    Workability
+                </label>
+                <label class="checkbox-label" style="margin-right: 15px">
+                    <input type="checkbox" name="WorkComfortGoal" checked="@Model.Project?.WorkComfortGoal" value="true" />
+                    Work comfort
+                </label>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Description">Popis projektu</label>
+        <textarea class="form-control" id="Description" name="Description" rows="3">@Model.Project?.Description</textarea>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="ActualState">Aktuální stav</label>
+        <textarea class="form-control" id="ActualState" name="ActualState" rows="3">@Model.Project?.ActualState</textarea>
+    </div>
+
+    <div class="form-group" style="margin-top: 20px">
+        <button type="submit" class="btn btn-success">Přidat projekt</button>
+        <a class="btn btn-primary" asp-page="/ProjectList">Zpět na seznam projektů</a>
+    </div>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" style="margin-top: 10px">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}

@@ -1,0 +1,56 @@
+﻿@page "{id:int}"
+@model ProjectManagerApp.Pages.EmployeeDetailsModel
+
+@{
+    ViewData["Title"] = "Detail zaměstnance - " + Model.Employee?.Name;
+}
+
+<div class="container mt-5">
+    <h2 class="mb-3">@Model.Employee?.Name</h2>
+
+    <div class="card" style="background-color: rgba(255, 255, 255, 0.2);">
+        <div class="card-header">
+            <h5>Karta zaměstnance</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">Jméno:</dt>
+                <dd class="col-sm-9">@Model.Employee?.Name</dd>
+
+                <dt class="col-sm-2">Email:</dt>
+                <dd class="col-sm-9">@Model.Employee?.Email</dd>
+
+                <dt class="col-sm-2">Telefon:</dt>
+                <dd class="col-sm-9">@Model.Employee?.Phone</dd>
+
+                <dt class="col-sm-2">Vytíženost:</dt>
+                <dd class="col-sm-9">
+                    <div class="col-sm-5">
+                        <div class="progress">
+                            <div class="progress-bar @(Model.Employee?.Workload > 100 ? "bg-danger" : "bg-success")" role="progressbar" style="width: @Model.Employee?.Workload%" aria-valuenow="@Model.Employee?.Workload" aria-valuemin="0" aria-valuemax="100">@Model.Employee?.Workload %</div>
+                        </div>
+                    </div>
+                </dd>
+
+                <dt class="col-sm-2">Status vytíženosti:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @Model.Employee?.GetIsBusyStatusColor()">
+                        @Model.Employee?.GetIsBusyStatusString()
+                    </span>
+                </dd>
+
+                <dt class="col-sm-2">Status:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @Model.Employee?.GetIsActiveStatusColor()">
+                        @Model.Employee?.GetIsActiveStatusString()
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a class="btn btn-warning" asp-page="/EmployeeEdit" asp-route-id="@Model.Employee.Id">Edituj zaměstnance</a>
+        <a class="btn btn-primary" asp-page="/HumanResources">Zpět na seznam zaměstnanců</a>
+    </div>
+</div>

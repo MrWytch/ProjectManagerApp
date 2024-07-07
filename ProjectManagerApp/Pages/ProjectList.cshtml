@@ -1,0 +1,75 @@
+﻿@page
+@model ProjectManagerApp.Pages.ProjectListModel
+@{
+	ViewData["Title"] = "Seznam projektů";
+}
+
+<h2>Seznam projektů</h2>
+
+<!-- Obsah stránky se seznamem projektů -->
+<table class="table">
+	<!-- Tabulka s projekty -->
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Číslo projektu a název</th>
+            <th>Start</th>
+            <th>Konec</th>
+            <th>Vedoucí projektu</th>
+            <th>Pokrok</th>
+            <th>Status</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model.Projects)
+        {
+            
+            <tr>
+                <td>@project.Id</td>
+                <td>@((project.Number) + " " + (project.Name))</td>
+                <td>@project.StartDate?.ToString("dd.MM.yyyy")</td>
+                <td>@project.FinishDate?.ToString("dd.MM.yyyy")</td>
+                <td>@Model.GetManagerOfProject(project)</td>
+                <td class="col-sm-2">
+                    <div class="progress">
+                        <div class="progress-bar @(project?.GetProjectStatusColor())" role="progressbar" style="width: @project?.Progress%" aria-valuenow="@project?.Progress" aria-valuemin="0" aria-valuemax="100">@project?.Progress %</div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge @project?.GetProjectStatusColor()">
+                        @project?.GetProjectStatusString()
+                    </span>
+                </td>
+                <td>
+                    <a class="btn btn-light" style="font-size: 12px; padding: 4px 6px;" asp-page="/ProjectDetails" asp-route-id="@project.Id">Karta projektu</a>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-3">
+    <a class="btn btn-success" asp-page="/ProjectAdd">Přidej projekt</a>
+</div>
+
+@* Skripty pro zobrazení varovných oken, pokud existují varovné hlášky v TempData *@
+@section Scripts {
+    <script>
+        window.addEventListener('load', function() {
+            @if (TempData["Overloaded"] != null)
+            {
+                <text>
+                alert("@TempData["Overloaded"]");
+                </text>
+            }
+            
+            @if (TempData["ProjectAdded"] != null)
+            {
+                <text>
+                alert("@TempData["ProjectAdded"]");
+                </text>
+            }
+        });
+    </script>
+}

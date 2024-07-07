@@ -1,0 +1,33 @@
+﻿@page
+@model ProjectManagerApp.Pages.EmployeeAddModel
+
+@{
+    ViewData["Title"] = "Přidat nového zaměstnance";
+}
+
+<h3 class="mb-3">Přidat nového zaměstnance</h3>
+
+<form method="post" class="col-sm-7">
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Name">Jméno a příjmení</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Employee?.Name" required />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Email">E-mail</label>
+        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Employee?.Email" />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label for="Phone">Telefon</label>
+        <input type="text" class="form-control" id="Phone" name="Phone" value="@Model.Employee?.Phone" />
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label class="checkbox-label" style="margin-right: 15px">
+            Aktivní
+            <input type="checkbox" name="IsActive" checked="@Model.Employee?.IsActive" value="true" />
+        </label>
+    </div>
+    <div class="form-group" style="margin-top: 20px">
+        <button type="submit" class="btn btn-success">Přidat zaměstnance</button>
+        <a class="btn btn-primary" asp-page="/HumanResources">Zpět na seznam zaměstnanců</a>
+    </div>
+</form>
